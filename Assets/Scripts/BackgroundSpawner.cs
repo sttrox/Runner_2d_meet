@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace EndlessRunnerJoker
+namespace RunnerMeet
 {
     public class BackgroundSpawner : RestartEntite, IRestartable
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace EndlessRunnerJoker
+namespace RunnerMeet
 {
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(Animator))]

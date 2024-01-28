@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace EndlessRunnerJoker
+namespace RunnerMeet
 {
     public class ToggleAudio : MonoBehaviour
     {

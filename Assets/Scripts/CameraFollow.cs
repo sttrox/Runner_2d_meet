@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace EndlessRunnerJoker
+namespace RunnerMeet
 {
     public class CameraFollow : RestartEntite
     {

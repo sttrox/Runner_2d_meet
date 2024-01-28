@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace EndlessRunnerJoker
+namespace RunnerMeet
 {
     public abstract class RestartEntite : MonoBehaviour
     {

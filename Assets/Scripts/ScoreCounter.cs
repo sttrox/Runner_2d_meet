@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace EndlessRunnerJoker
+namespace RunnerMeet
 {
     public class ScoreCounter : RestartEntite, ISaved
     {
