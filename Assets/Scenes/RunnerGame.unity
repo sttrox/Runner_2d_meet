@@ -777,7 +777,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &659611325
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4024,6 +4024,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1949020838}
   m_CullTransparentMesh: 1
+--- !u!114 &1992178006 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5803430877058467281, guid: 2b819b44c6084408aa34d20ab7954b56, type: 3}
+  m_PrefabInstance: {fileID: 8027298886302194047}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ceddf78c16040949f71c99943e2a582, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2009972651
 GameObject:
   m_ObjectHideFlags: 0
@@ -4550,6 +4561,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6490473233505689091, guid: bd028312f150a4a5f86ac7961fad117d, type: 3}
+      propertyPath: _uiChecker
+      value: 
+      objectReference: {fileID: 1992178006}
     - target: {fileID: 6490473233505689091, guid: bd028312f150a4a5f86ac7961fad117d, type: 3}
       propertyPath: _levelsConfig
       value: 

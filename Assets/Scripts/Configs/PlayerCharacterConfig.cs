@@ -1,4 +1,4 @@
-using Characters;
+using Gameplay.Characters;
 using UnityEngine;
 
 namespace RunnerMeet.Configs

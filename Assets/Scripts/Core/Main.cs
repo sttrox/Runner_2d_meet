@@ -1,34 +1,58 @@
-using System;
+using System.Collections;
 using RunnerMeet.Configs;
 using RunnerMeet.Gameplay;
+using RunnerMeet.Inputs;
 using RunnerMeet.UI;
+using UI;
 using UnityEngine;
 
 namespace Core
 {
-    public class Main : MonoBehaviour, IStartGame
-    {
-        [SerializeField] private LevelsConfig _levelsConfig;
-        [SerializeField] private PlayerCharacterConfig _playerCharacterConfig;
-        [SerializeField] private ScreenSwitcher _screenSwitcher;
+	public class Main : MonoBehaviour, IStartGame, ICoroutineRunner
+	{
+		[SerializeField]
+		private LevelsConfig _levelsConfig;
 
-        private Game _game;
+		[SerializeField]
+		private PlayerCharacterConfig _playerCharacterConfig;
 
-        private void Start()
-        {
-            _game = new Game(_levelsConfig.LevelPrefab, _playerCharacterConfig.PlayerCharacterPrefab, _screenSwitcher);
-            MenuScreen menuScreen = _screenSwitcher.ShowScreen<MenuScreen>();
-            menuScreen.Construct((IStartGame)this);
-        }
+		[SerializeField]
+		private ScreenSwitcher _screenSwitcher;
 
-        private void Update()
-        {
-            _game?.ThisUpdate();
-        }
+		[SerializeField]
+		private UIChecker _uiChecker;
 
-        public void StartGame()
-        {
-            _game.StartGame();
-        }
-    }
+		private IInput _playerInput;
+
+		private Game _game;
+
+		private void Awake()
+		{
+			_playerInput = new TouchAndKeyboardInput(_uiChecker);
+		}
+
+		private void Start()
+		{
+			_game = new Game(_levelsConfig.LevelPrefab, _playerCharacterConfig.PlayerCharacterPrefab, _screenSwitcher,
+				_playerInput, (ICoroutineRunner)this);
+			MenuScreen menuScreen = _screenSwitcher.ShowScreen<MenuScreen>();
+			menuScreen.Construct((IStartGame)this);
+		}
+
+		private void Update()
+		{
+			_game?.ThisUpdate();
+		}
+
+		public void StartGame()
+		{
+			_game.StartGame();
+		}
+
+		Coroutine ICoroutineRunner.RunCoroutine(IEnumerator enumerator)
+		{
+			Coroutine result = StartCoroutine(enumerator);
+			return result;
+		}
+	}
 }
