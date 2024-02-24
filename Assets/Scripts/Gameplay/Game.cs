@@ -1,5 +1,6 @@
 using System.Collections;
 using Core;
+using Gameplay.Cameras;
 using Gameplay.Characters;
 using RunnerMeet.Inputs;
 using RunnerMeet.UI;
@@ -12,17 +13,27 @@ namespace RunnerMeet.Gameplay
 		private readonly Level _levelPrefab;
 		private readonly ScreenSwitcher _screenSwitcher;
 		private readonly NewPlayerCharacter _playerCharacterPrefab;
+		private readonly IInput _playerInput;
+		private readonly ICoroutineRunner _coroutineRunner;
+		private readonly CameraDistributor _cameraDistributor;
+		private readonly IStarterGame _starterGame;
 
 		private GameScreen _gameScreen;
 		private NewPlayerCharacter _playerInstance;
 
 		private int _score;
-		private IInput _playerInput;
-		private ICoroutineRunner _coroutineRunner;
+
+		private Level _levelInstance;
+		private GameTimeScaler _gameTimeScaler;
 
 		public Game(Level levelPrefab, NewPlayerCharacter playerCharacterPrefab, ScreenSwitcher screenSwitcher,
-			IInput playerInput, ICoroutineRunner coroutineRunner)
+			IInput playerInput, CameraDistributor cameraDistributor, GameTimeScaler gameTimeScaler,
+			ICoroutineRunner coroutineRunner,
+			IStarterGame starterGame)
 		{
+			_gameTimeScaler = gameTimeScaler;
+			_starterGame = starterGame;
+			_cameraDistributor = cameraDistributor;
 			_coroutineRunner = coroutineRunner;
 			_playerInput = playerInput;
 			_playerCharacterPrefab = playerCharacterPrefab;
@@ -42,14 +53,23 @@ namespace RunnerMeet.Gameplay
 
 		public void StartGame()
 		{
-			Level levelInstance = Object.Instantiate(_levelPrefab);
+			_levelInstance = Object.Instantiate(_levelPrefab);
 			_gameScreen = _screenSwitcher.ShowScreen<GameScreen>();
+			_gameScreen.Construct(_starterGame, _gameTimeScaler, _screenSwitcher);
 
-			Vector3 spawnPoint = levelInstance.SpawnPoint;
+			Vector3 spawnPoint = _levelInstance.SpawnPoint;
 
 			_playerInstance = Object.Instantiate(_playerCharacterPrefab, spawnPoint, Quaternion.identity);
 			_playerInstance.Construct(_playerInput);
 			_playerInstance.Died += PlayerInstanceOnDied;
+
+			_cameraDistributor.SetTargetFollow(_playerInstance.transform);
+		}
+
+		public void Destroy()
+		{
+			_levelInstance.Destroy();
+			_playerInstance.Destroy();
 		}
 
 		private void PlayerInstanceOnDied()
@@ -61,8 +81,7 @@ namespace RunnerMeet.Gameplay
 				//todo move to configs
 				yield return new WaitForSeconds(2);
 				var finishScreen = _screenSwitcher.ShowScreen<FinishScreen>();
-				//todo throw need args
-				finishScreen.Construct(null);
+				finishScreen.Construct(_starterGame);
 			}
 		}
 	}

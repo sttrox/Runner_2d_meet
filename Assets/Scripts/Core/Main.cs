@@ -1,4 +1,5 @@
 using System.Collections;
+using Gameplay.Cameras;
 using RunnerMeet.Configs;
 using RunnerMeet.Gameplay;
 using RunnerMeet.Inputs;
@@ -8,7 +9,7 @@ using UnityEngine;
 
 namespace Core
 {
-	public class Main : MonoBehaviour, IStartGame, ICoroutineRunner
+	public class Main : MonoBehaviour, IStarterGame, ICoroutineRunner
 	{
 		[SerializeField]
 		private LevelsConfig _levelsConfig;
@@ -20,7 +21,12 @@ namespace Core
 		private ScreenSwitcher _screenSwitcher;
 
 		[SerializeField]
+		private CameraDistributor _cameraDistributor;
+
+		[SerializeField]
 		private UIChecker _uiChecker;
+
+		private readonly GameTimeScaler _gameTimeScaler = new GameTimeScaler();
 
 		private IInput _playerInput;
 
@@ -34,9 +40,9 @@ namespace Core
 		private void Start()
 		{
 			_game = new Game(_levelsConfig.LevelPrefab, _playerCharacterConfig.PlayerCharacterPrefab, _screenSwitcher,
-				_playerInput, (ICoroutineRunner)this);
+				_playerInput, _cameraDistributor, _gameTimeScaler, (ICoroutineRunner)this, (IStarterGame)this);
 			MenuScreen menuScreen = _screenSwitcher.ShowScreen<MenuScreen>();
-			menuScreen.Construct((IStartGame)this);
+			menuScreen.Construct((IStarterGame)this);
 		}
 
 		private void Update()
@@ -47,6 +53,20 @@ namespace Core
 		public void StartGame()
 		{
 			_game.StartGame();
+		}
+
+		public void RestartGame()
+		{
+			_game.Destroy();
+			_game.StartGame();
+		}
+
+		public void GoToMainMenu()
+		{
+			_game.Destroy();
+
+			MenuScreen menuScreen = _screenSwitcher.ShowScreen<MenuScreen>();
+			menuScreen.Construct((IStarterGame)this);
 		}
 
 		Coroutine ICoroutineRunner.RunCoroutine(IEnumerator enumerator)

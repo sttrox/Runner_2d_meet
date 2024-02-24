@@ -36,6 +36,11 @@ namespace Gameplay.Characters
 			}
 		}
 
+		public void Destroy()
+		{
+			Destroy(this.gameObject);
+		}
+
 		private void ObstacleTriggerDetectorOnDetected(GameObject obstacle)
 		{
 			isDied = true;

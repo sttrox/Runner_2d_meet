@@ -9,9 +9,9 @@ namespace RunnerMeet.UI
     {
         [SerializeField] private Button _playButton;
 
-        private IStartGame _gameStarter;
+        private IStarterGame _gameStarter;
 
-        public void Construct(IStartGame gameStarter)
+        public void Construct(IStarterGame gameStarter)
         {
             _gameStarter = gameStarter;
         }
