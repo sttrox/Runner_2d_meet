@@ -45,6 +45,7 @@ namespace Gameplay.Characters
 		{
 			isDied = true;
 			_playerAnimator.PlayDead();
+			_moverOnGround.Stop();
 			Died?.Invoke();
 		}
 	}

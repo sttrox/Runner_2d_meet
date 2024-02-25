@@ -34,6 +34,8 @@ namespace Gameplay.Characters
 		public MoverState CurrentState => _currentState;
 		private bool IsIdle => _rigidbody.velocity == Vector2.zero;
 
+		private bool _isStop = false;
+
 		public void Construct(IInput input)
 		{
 			_input = input;
@@ -46,12 +48,23 @@ namespace Gameplay.Characters
 
 		private void FixedUpdate()
 		{
+			if (_isStop)
+			{
+				return;
+			}
+
 			_isGrounded = CheckGrounded();
 
 			Move();
 			TryApplyJumpForce();
 
 			CalculateCurrentState();
+		}
+
+		public void Stop()
+		{
+			_rigidbody.velocity = Vector2.zero;
+			_isStop = true;
 		}
 
 		private void TryApplyJumpForce()

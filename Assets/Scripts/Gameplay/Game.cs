@@ -56,13 +56,13 @@ namespace RunnerMeet.Gameplay
 			_levelInstance = Object.Instantiate(_levelPrefab);
 			_gameScreen = _screenSwitcher.ShowScreen<GameScreen>();
 			_gameScreen.Construct(_starterGame, _gameTimeScaler, _screenSwitcher);
-
 			Vector3 spawnPoint = _levelInstance.SpawnPoint;
 
 			_playerInstance = Object.Instantiate(_playerCharacterPrefab, spawnPoint, Quaternion.identity);
 			_playerInstance.Construct(_playerInput);
 			_playerInstance.Died += PlayerInstanceOnDied;
 
+			_levelInstance.ChunksSpawner.Construct(_playerInstance.transform);
 			_cameraDistributor.SetTargetFollow(_playerInstance.transform);
 		}
 
